@@ -170,7 +170,7 @@ Open http://localhost:8080 — phone preview calls Token Factory through the loc
 
 https://d21exrzscgvse2.cloudfront.net/
 
-Try Insight chat, Mail draft with Token Factory, and Autopilot in the phone preview. The full Agent Channel + Google integrations are in the **iOS build**.
+This is an **interactive phone demo** (not a waitlist landing): open Agent to plan a week, triage demo Mail, drag apps into Insight, or flip Autopilot. Every chat call hits Nebius Token Factory via Lambda. The full Google-connected Agent Channel is in the **iOS build**.
 
 ---
 
