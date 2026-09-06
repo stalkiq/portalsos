@@ -1,4 +1,5 @@
 const apps = [
+  { id: "Agent", icon: "✨", hint: "Agent Channel: plan your week from Mail, Notes, and demo context via NVIDIA Nemotron on Token Factory." },
   { id: "Browser", icon: "🌐", hint: "Open Browser and drop it here to talk about the page." },
   { id: "Camera", icon: "📷", hint: "Capture a photo, then drop Camera here." },
   { id: "Notes", icon: "📝", hint: "Write a note, then drop Notes here." },
@@ -111,6 +112,16 @@ function escapeHtml(text) {
 }
 
 function contextHint() {
+  if (state.context === "Agent") {
+    const note = state.notes[state.selectedNote];
+    return [
+      "PortalOS Agent Channel (web demo context).",
+      "MAIL:\n" + demoMail.map((m) => `${m.unread ? "UNREAD" : "read"} ${m.from} | ${m.subject} | ${m.snippet}`).join("\n"),
+      note ? `NOTES:\n${note.title}\n${note.body}` : "NOTES: none",
+      "CALENDAR: demo — design review today 4pm; Monday standup done.",
+      "WEATHER: mild week, rain chance midweek — pack a light jacket."
+    ].join("\n\n");
+  }
   if (state.context === "Mail") {
     return "Sample inbox (fictional):\n" + demoMail.map((m) => `${m.unread ? "UNREAD" : "read"} ${m.from} | ${m.subject} | ${m.snippet}`).join("\n");
   }
@@ -165,9 +176,15 @@ function pinApp(id) {
   const app = apps.find((item) => item.id === id);
   state.messages.push({ role: "system", text: `Using ${id}.` });
   renderChat();
-  ask(id === "Mail"
-    ? "Triage this inbox. What is important, what is noise, and what is safe to ignore."
-    : `The user dropped ${id} into PortalOS. ${app ? app.hint : ""} Give a short briefing.`);
+  if (id === "Mail") {
+    ask("Triage this inbox. What is important, what is noise, and what is safe to ignore.");
+    return;
+  }
+  if (id === "Agent") {
+    ask("Plan my week. Prioritize the next 7 days using my mail, notes, calendar hints, and weather. Use NVIDIA Nemotron on Nebius Token Factory. Short actionable bullets.");
+    return;
+  }
+  ask(`The user dropped ${id} into PortalOS. ${app ? app.hint : ""} Give a short briefing.`);
 }
 
 function clearAutoTimers() {
@@ -578,6 +595,40 @@ function openApp(id) {
     state.mailView = "inbox";
     state.compose = null;
     renderMail();
+    return;
+  }
+  if (id === "Agent") {
+    setSheetChrome("Agent", "Agent Channel", "");
+    $("sheetBody").innerHTML = `
+      <div class="mail-reader">
+        <div class="mail-reader-body">
+          <p class="mail-kicker">TOKEN FACTORY AGENT</p>
+          <h3>Agent Channel</h3>
+          <p>Your NVIDIA Nemotron agent on Nebius Token Factory. It plans week / month / year from Mail, Notes, and demo calendar + weather context.</p>
+          <p>Tap a horizon, or drop Agent into Insight.</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+            <button type="button" class="mail-action" data-h="week">Plan week</button>
+            <button type="button" class="mail-action" data-h="month">Plan month</button>
+            <button type="button" class="mail-action" data-h="year">Plan year</button>
+          </div>
+          <button type="button" class="mail-portal" id="agentPortal" style="margin-top:16px">Add to Portal</button>
+          <div style="padding: 12px 0 0">${nebiusMark()}</div>
+        </div>
+      </div>`;
+    $("sheetBody").querySelectorAll("[data-h]").forEach((btn) => {
+      btn.onclick = () => {
+        $("appSheet").hidden = true;
+        state.context = "Agent";
+        const horizon = btn.dataset.h;
+        state.messages = [{ role: "system", text: "Using Agent." }];
+        renderChat();
+        ask(`Plan my ${horizon}. Use mail, notes, calendar hints, and weather. Be concrete. Powered by NVIDIA Nemotron on Nebius Token Factory.`);
+      };
+    });
+    $("agentPortal").onclick = () => {
+      $("appSheet").hidden = true;
+      pinApp("Agent");
+    };
     return;
   }
   setSheetChrome(id, id, "");
