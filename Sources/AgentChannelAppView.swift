@@ -26,11 +26,11 @@ enum AgentPlanHorizon: String, CaseIterable, Identifiable {
     var prompt: String {
         switch self {
         case .week:
-            return "Plan my week. Prioritize what to do in the next 7 days using my calendar, mail, notes, and weather."
+            return "Plan my week. Prioritize what to do in the next 7 days using my calendar, mail, notes, weather, and maps."
         case .month:
             return "Plan my month. Spot deadlines, travel, and focus themes for the next 30 days from my apps."
         case .year:
-            return "Plan my year at a high level. Themes, seasons, and big commitments implied by my calendar, mail, and notes — be honest when data is thin."
+            return "Plan my year at a high level. Themes, seasons, and big commitments implied by my calendar, mail, notes, and maps — be honest when data is thin."
         }
     }
 }
@@ -51,6 +51,7 @@ struct AgentChannelAppView: View {
     @ObservedObject var calendar: GoogleCalendarEngine
     @ObservedObject var notes: NotesStore
     @ObservedObject var weather: WeatherEngine
+    @ObservedObject var maps: MapsEngine
     var onAddToPortal: () -> Void
 
     @Environment(\.dismiss) private var dismiss
@@ -161,7 +162,7 @@ struct AgentChannelAppView: View {
             Text("Agent Channel")
                 .font(.system(size: 32, weight: .bold, design: .rounded))
                 .foregroundStyle(.white)
-            Text("Your Token Factory agent lives here. It reads Mail, Calendar, Notes, and Weather — then suggests how to run your week, month, or year.")
+            Text("Your Token Factory agent lives here. It reads Mail, Calendar, Notes, Weather, and Maps — then suggests how to run your week, month, or year.")
                 .font(.system(size: 14, weight: .regular))
                 .foregroundStyle(.white.opacity(0.55))
                 .fixedSize(horizontal: false, vertical: true)
@@ -183,6 +184,7 @@ struct AgentChannelAppView: View {
                 sourceChip("Calendar", ok: calendar.isSignedIn, detail: calendar.isSignedIn ? "\(calendar.events.count)" : "Sign in")
                 sourceChip("Notes", ok: !notes.notes.isEmpty, detail: "\(notes.notes.count)")
                 sourceChip("Weather", ok: weather.snapshot != nil, detail: weather.snapshot?.placeName ?? "Open app")
+                sourceChip("Maps", ok: maps.selectedPlace != nil, detail: maps.selectedPlace?.name ?? "Open app")
             }
         }
     }
@@ -259,7 +261,7 @@ struct AgentChannelAppView: View {
             Text("Ask for a plan, or pick Week / Month / Year.")
                 .font(.system(size: 17, weight: .semibold, design: .rounded))
                 .foregroundStyle(.white)
-            Text("Sign into Mail and Calendar for richer suggestions. Notes and Weather help when available.")
+            Text("Sign into Mail and Calendar for richer suggestions. Notes, Weather, and Maps help when available.")
                 .font(.system(size: 13, weight: .regular))
                 .foregroundStyle(.white.opacity(0.45))
         }
@@ -363,6 +365,11 @@ struct AgentChannelAppView: View {
             parts.append("WEATHER:\n\(weatherContext)")
         } else {
             parts.append("WEATHER: no forecast loaded.")
+        }
+        if let mapsContext = maps.insightContext {
+            parts.append("MAPS:\n\(mapsContext)")
+        } else {
+            parts.append("MAPS: no place or route loaded.")
         }
         return parts.joined(separator: "\n\n")
     }
