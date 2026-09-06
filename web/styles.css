@@ -647,7 +647,14 @@ body {
 }
 .foot a { color: rgba(255,255,255,0.55); }
 
-@media (max-width: 720px) {
-  .topbar { flex-direction: column; align-items: flex-start; }
+@media (max-width: 860px) {
+  .demo-stage {
+    flex-direction: column;
+    gap: 24px;
+    padding-top: 28px;
+  }
+  .info-card {
+    width: min(402px, 100%);
+  }
   .home-card { min-height: 560px; }
 }
