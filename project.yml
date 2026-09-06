@@ -4,7 +4,7 @@ options:
 settings:
   base:
     PRODUCT_BUNDLE_IDENTIFIER: com.portalsos.app
-    PRODUCT_NAME: PortalsOS
+    PRODUCT_NAME: PortalOS
     SWIFT_VERSION: 5.0
     IPHONEOS_DEPLOYMENT_TARGET: 17.0
 targets:
@@ -18,12 +18,20 @@ targets:
       - path: Resources
     settings:
       base:
-        INFOPLIST_KEY_CFBundleDisplayName: PortalsOS
+        INFOPLIST_KEY_CFBundleDisplayName: PortalOS
         INFOPLIST_KEY_UIApplicationSceneManifest_Generation: true
         INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: true
         INFOPLIST_KEY_UILaunchScreen_Generation: true
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: UIInterfaceOrientationPortrait
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
         GENERATE_INFOPLIST_FILE: true
+        INFOPLIST_FILE: Resources/Info.plist
+        INFOPLIST_KEY_NSCameraUsageDescription: PortalOS Camera uses the camera so Insight can describe what you capture.
+        INFOPLIST_KEY_NSPhotoLibraryUsageDescription: PortalOS can use a library photo when the Simulator has no camera.
+        INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: PortalOS Weather uses your location so Open-Meteo can load the local forecast. You can type a city instead.
+        INFOPLIST_KEY_NEBIUS_API_KEY: $(NEBIUS_API_KEY)
+    configFiles:
+      Debug: Config/PortalsOS.xcconfig
+      Release: Config/PortalsOS.xcconfig
     scheme:
       testTargets: []

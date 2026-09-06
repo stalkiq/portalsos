@@ -3,6 +3,8 @@
 !.env.example
 !backend/.env.example
 backend/.env
+Config/Secrets.xcconfig
+Sources/Generated/
 *.xcuserstate
 xcuserdata/
 DerivedData/

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>PortalOS — Join the waitlist</title>
+  <link rel="stylesheet" href="/styles.css?v=7" />
+</head>
+<body>
+  <p class="brand">PortalOS</p>
+  <main class="stage">
+    <section class="copy">
+      <p class="eyebrow">Coming soon</p>
+      <h1>An AI-first phone OS.</h1>
+      <p>PortalOS puts Insight and Autopilot on the home screen. Join the waitlist for early access.</p>
+      <ul>
+        <li>Ask anything, or drop an app for live context</li>
+        <li>Autopilot watches Mail and drafts — you send</li>
+        <li>Notes, Camera, and Browser in one OS</li>
+      </ul>
+      <form class="waitlist" id="waitlist">
+        <input id="email" type="email" required autocomplete="email" placeholder="Email address" />
+        <button type="submit" id="waitBtn">Join the waitlist</button>
+        <p class="wait-msg" id="waitMsg" hidden></p>
+      </form>
+    </section>
+
+    <div class="phone" id="phone">
+      <div class="bezel">
+        <div class="island"></div>
+        <div class="screen" id="screen">
+          <div id="home" class="home">
+            <div class="app-row" id="appRow"></div>
+            <section class="insight" id="dropZone">
+              <div class="insight-top">
+                <div class="chips">
+                  <span class="chip" id="contextChip" hidden></span>
+                </div>
+                <button type="button" class="new-chat" id="newChat" title="New chat">New chat</button>
+              </div>
+              <div class="transcript" id="transcript"></div>
+              <form class="composer" id="composer">
+                <input id="prompt" type="text" autocomplete="off" placeholder="Ask PortalOS…" />
+                <button type="submit" class="send" aria-label="Send">↑</button>
+              </form>
+            </section>
+            <div id="autopilot" class="autopilot-workspace" hidden>
+              <div class="auto-card">
+                <div class="auto-head">
+                  <span class="bolt" aria-hidden="true">⚡</span>
+                  <strong>PortalOS Autopilot</strong>
+                  <span class="live">LIVE</span>
+                </div>
+                <p class="auto-copy">Watching the demo inbox. Replies are drafted, not sent. Important mail is saved to Notes.</p>
+                <div id="autoFeed" class="auto-feed"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="appSheet" class="sheet" hidden>
+            <div class="sheet-bar" id="sheetBar">
+              <button type="button" id="closeSheet">Close</button>
+              <strong id="sheetTitle">App</strong>
+              <div class="sheet-actions" id="sheetActions"></div>
+            </div>
+            <div class="sheet-body" id="sheetBody"></div>
+          </div>
+        </div>
+        <div class="home-bar"></div>
+      </div>
+    </div>
+  </main>
+  <p class="foot">PortalOS · Early access waitlist</p>
+  <script src="/app.js?v=7"></script>
+</body>
+</html>

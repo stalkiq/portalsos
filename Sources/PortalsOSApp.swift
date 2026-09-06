@@ -1,10 +1,13 @@
 import SwiftUI
 
 @main
-struct PortalsOSApp: App {
+struct PortalOSApp: App {
     var body: some Scene {
         WindowGroup {
-            HomeScreenPrototypeView()
+            NavigationStack {
+                HomeScreenPrototypeView()
+                    .toolbar(.hidden, for: .navigationBar)
+            }
         }
     }
 }

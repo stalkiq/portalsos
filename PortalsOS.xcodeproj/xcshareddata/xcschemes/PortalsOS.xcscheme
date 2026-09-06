@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8A9B62D30643DD82AA7E6F72"
-               BuildableName = "PortalsOS.app"
+               BuildableName = "PortalOS.app"
                BlueprintName = "PortalsOS"
                ReferencedContainer = "container:PortalsOS.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8A9B62D30643DD82AA7E6F72"
-            BuildableName = "PortalsOS.app"
+            BuildableName = "PortalOS.app"
             BlueprintName = "PortalsOS"
             ReferencedContainer = "container:PortalsOS.xcodeproj">
          </BuildableReference>
@@ -58,15 +58,20 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8A9B62D30643DD82AA7E6F72"
-            BuildableName = "PortalsOS.app"
+            BuildableName = "PortalOS.app"
             BlueprintName = "PortalsOS"
             ReferencedContainer = "container:PortalsOS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <EnvironmentVariables>
          <EnvironmentVariable
+            key = "NEBIUS_API_KEY"
+            value = "v1.CmQKHHN0YXRpY2tleS1lMDBlcDZ3NHczcGE5NTVyNXoSIXNlcnZpY2VhY2NvdW50LWUwMHM3Nzk1YnF6cHQ2eW02OTIMCJrZ1tQGEIWM4qcBOgwImdzunwcQwMv6vwJAAloDZTAw.AAAAAAAAAAEndq1KLNiYwpUwfnBZcje2EU81jDSKMdL_8K__0B1a03q49iz5m4hHGwlLQCjw5-LNd-Qww5ugo374go034OIE"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
             key = "NEBIUS_MODEL"
-            value = "meta-llama/Llama-3.3-70B-Instruct"
+            value = "nvidia/Nemotron-3_5-Lightning"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
@@ -84,7 +89,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8A9B62D30643DD82AA7E6F72"
-            BuildableName = "PortalsOS.app"
+            BuildableName = "PortalOS.app"
             BlueprintName = "PortalsOS"
             ReferencedContainer = "container:PortalsOS.xcodeproj">
          </BuildableReference>

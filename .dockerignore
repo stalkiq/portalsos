@@ -1,0 +1,9 @@
+.git
+**/.env
+**/Secrets.xcconfig
+**/Sources
+**/*.xcodeproj
+**/DerivedData
+**/xcuserdata
+**/.DS_Store
+backend/node_modules
