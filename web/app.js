@@ -84,7 +84,38 @@ function renderApps() {
 }
 
 function emptyCopy() {
-  return `<div class="empty">Ask PortalOS anything. Or drag Mail, Notes, Camera, or Browser into this chat to give it context.<br><br>New chat clears the card so you can start over.</div>`;
+  return `<div class="empty"><strong>Live PortalOS demo</strong>Ask Nemotron anything, open <b>Agent</b> to plan your week, or drag Mail / Notes into Insight. Red power = Autopilot.</div>`;
+}
+
+function renderTryRow() {
+  const row = $("tryRow");
+  if (!row) return;
+  const show = !state.systemOn && state.messages.length === 0 && !state.busy;
+  row.hidden = !show;
+  if (!show) {
+    row.innerHTML = "";
+    return;
+  }
+  row.innerHTML = [
+    ["Plan my week", "agent"],
+    ["Triage Mail", "mail"],
+    ["Ask Insight", "ask"]
+  ].map(([label, id]) => `<button type="button" class="try-chip" data-try="${id}">${label}</button>`).join("");
+  row.querySelectorAll("[data-try]").forEach((btn) => {
+    btn.onclick = () => {
+      const kind = btn.dataset.try;
+      if (kind === "agent") {
+        openApp("Agent");
+        return;
+      }
+      if (kind === "mail") {
+        pinApp("Mail");
+        return;
+      }
+      $("prompt").focus();
+      ask("In one short paragraph: what is PortalOS, and how does Nebius Token Factory + NVIDIA Nemotron power it?");
+    };
+  });
 }
 
 function renderChat() {
@@ -98,10 +129,11 @@ function renderChat() {
   const box = $("transcript");
   if (!state.messages.length) {
     box.innerHTML = emptyCopy();
-    return;
+  } else {
+    box.innerHTML = state.messages.map((m) => `<div class="bubble ${m.role}">${escapeHtml(m.text)}</div>`).join("");
+    box.scrollTop = box.scrollHeight;
   }
-  box.innerHTML = state.messages.map((m) => `<div class="bubble ${m.role}">${escapeHtml(m.text)}</div>`).join("");
-  box.scrollTop = box.scrollHeight;
+  renderTryRow();
 }
 
 function escapeHtml(text) {
@@ -661,36 +693,6 @@ function openApp(id) {
   }
 }
 
-async function joinWaitlist(event) {
-  event.preventDefault();
-  const email = ($("email").value || "").trim();
-  const msg = $("waitMsg");
-  const btn = $("waitBtn");
-  msg.hidden = false;
-  msg.className = "wait-msg";
-  btn.disabled = true;
-  try {
-    const response = await fetch("/v1/waitlist", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email })
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error((data.error && data.error.message) || "Could not join.");
-    }
-    msg.className = "wait-msg ok";
-    msg.textContent = data.already
-      ? "You’re already on the list. We’ll be in touch."
-      : "You’re on the list. We’ll email you when PortalOS opens.";
-    $("email").value = "";
-  } catch (error) {
-    msg.className = "wait-msg err";
-    msg.textContent = error.message || "Could not join the waitlist.";
-  }
-  btn.disabled = false;
-}
-
 function bind() {
   $("composer").addEventListener("submit", (event) => {
     event.preventDefault();
@@ -698,7 +700,6 @@ function bind() {
   });
   $("newChat").onclick = newChat;
   $("closeSheet").onclick = closeSheet;
-  $("waitlist").addEventListener("submit", joinWaitlist);
   const zone = $("dropZone");
   zone.addEventListener("dragover", (event) => {
     event.preventDefault();
@@ -714,5 +715,6 @@ function bind() {
 }
 
 renderApps();
+stopAutopilot();
 renderChat();
 bind();

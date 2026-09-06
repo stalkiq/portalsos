@@ -3,28 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>PortalOS — Nebius × NVIDIA Hackathon</title>
-  <link rel="stylesheet" href="/styles.css?v=8" />
+  <title>PortalOS Demo — Nebius × NVIDIA</title>
+  <link rel="stylesheet" href="/styles.css?v=9" />
 </head>
-<body>
-  <p class="brand">PortalOS</p>
-  <main class="stage">
-    <section class="copy">
-      <p class="eyebrow">Nebius × NVIDIA · Best Apps and Agents</p>
-      <h1>An AI-first phone OS on Token Factory.</h1>
-      <p>PortalOS runs NVIDIA Nemotron on Nebius Token Factory — Insight on the home screen, Autopilot for Mail, and Agent Channel for week / month / year plans.</p>
-      <ul>
-        <li>Drop apps into Insight for live Nemotron context</li>
-        <li>Agent Channel plans from Mail, Calendar, Notes, Weather</li>
-        <li>Autopilot drafts with Token Factory — you stay in control</li>
-      </ul>
-      <form class="waitlist" id="waitlist">
-        <input id="email" type="email" required autocomplete="email" placeholder="Email address" />
-        <button type="submit" id="waitBtn">Join the waitlist</button>
-        <p class="wait-msg" id="waitMsg" hidden></p>
-      </form>
-    </section>
+<body class="demo-page">
+  <header class="topbar">
+    <div class="topbar-brand">
+      <strong>PortalOS</strong>
+      <span>Live demo · NVIDIA Nemotron on Nebius Token Factory</span>
+    </div>
+    <nav class="topbar-links">
+      <a href="https://github.com/stalkiq/portalsos">GitHub</a>
+      <a href="https://github.com/stalkiq/portalsos#quick-start">iOS setup</a>
+    </nav>
+  </header>
 
+  <main class="demo-stage">
+    <p class="demo-kicker">Best Apps and Agents · try the phone below</p>
     <div class="phone" id="phone">
       <div class="bezel">
         <div class="island"></div>
@@ -39,6 +34,7 @@
                 <button type="button" class="new-chat" id="newChat" title="New chat">New chat</button>
               </div>
               <div class="transcript" id="transcript"></div>
+              <div class="try-row" id="tryRow"></div>
               <form class="composer" id="composer">
                 <input id="prompt" type="text" autocomplete="off" placeholder="Ask PortalOS…" />
                 <button type="submit" class="send" aria-label="Send">↑</button>
@@ -69,8 +65,10 @@
         <div class="home-bar"></div>
       </div>
     </div>
+    <p class="demo-hint">Open <b>Agent</b> to plan a week, <b>Mail</b> to triage, or turn the red power toggle for Autopilot. Drag any app into Insight for live Nemotron context.</p>
   </main>
-  <p class="foot">PortalOS · NVIDIA Nemotron on Nebius Token Factory · <a href="https://github.com/stalkiq/portalsos">GitHub</a></p>
-  <script src="/app.js?v=8"></script>
+
+  <p class="foot">PortalOS hackathon demo · Token Factory inference stays server-side · <a href="https://github.com/stalkiq/portalsos">Source</a></p>
+  <script src="/app.js?v=9"></script>
 </body>
 </html>
