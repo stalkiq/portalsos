@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>PortalOS Demo — Nebius × NVIDIA</title>
-  <link rel="stylesheet" href="/styles.css?v=9" />
+  <link rel="stylesheet" href="/styles.css?v=10" />
 </head>
 <body class="demo-page">
   <header class="topbar">
@@ -19,38 +19,60 @@
   </header>
 
   <main class="demo-stage">
-    <p class="demo-kicker">Best Apps and Agents · try the phone below</p>
-    <div class="phone" id="phone">
-      <div class="bezel">
+    <p class="demo-kicker">Best Apps and Agents · same shell as the iOS build</p>
+
+    <div class="device" id="phone">
+      <div class="device-bezel">
+        <div class="status-row">
+          <span id="statusTime">9:41</span>
+          <span class="status-brand">PortalOS</span>
+        </div>
         <div class="island"></div>
-        <div class="screen" id="screen">
+
+        <div class="home-card" id="screen">
           <div id="home" class="home">
-            <div class="app-row" id="appRow"></div>
-            <section class="insight" id="dropZone">
-              <div class="insight-top">
-                <div class="chips">
-                  <span class="chip" id="contextChip" hidden></span>
+            <div class="dock" id="dock"></div>
+            <p class="home-date" id="homeDate"></p>
+            <div class="drawer" id="drawer"></div>
+
+            <section class="insight-sheet" id="dropZone">
+              <button type="button" class="sheet-handle" id="drawerToggle" aria-label="More apps">
+                <span></span><span></span><span></span>
+              </button>
+
+              <div class="insight-body" id="insightBody">
+                <div class="insight-head" id="insightHead" hidden>
+                  <div>
+                    <p class="analyzing" id="analyzingTitle">Insight</p>
+                    <p class="analyzing-sub" id="analyzingSub"></p>
+                  </div>
+                  <button type="button" class="new-chat" id="newChat">New chat</button>
                 </div>
-                <button type="button" class="new-chat" id="newChat" title="New chat">New chat</button>
+                <div class="transcript" id="transcript"></div>
+                <div class="try-row" id="tryRow"></div>
               </div>
-              <div class="transcript" id="transcript"></div>
-              <div class="try-row" id="tryRow"></div>
+
+              <div id="autopilot" class="autopilot-workspace" hidden>
+                <div class="auto-card">
+                  <div class="auto-head">
+                    <strong>PortalOS Autopilot</strong>
+                    <span class="live">LIVE</span>
+                  </div>
+                  <p class="auto-copy">Watching the demo inbox. Replies are drafted, not sent. Important mail is saved to Notes.</p>
+                  <div id="autoFeed" class="auto-feed"></div>
+                </div>
+              </div>
+
               <form class="composer" id="composer">
+                <span class="composer-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12c0 4-4 7-9 7-1.1 0-2.1-.2-3-.5L3 20l1.4-3.5C3.5 15.4 3 13.8 3 12c0-4 4-7 9-7s9 3 9 7z"/></svg>
+                </span>
                 <input id="prompt" type="text" autocomplete="off" placeholder="Ask PortalOS…" />
-                <button type="submit" class="send" aria-label="Send">↑</button>
+                <button type="submit" class="send" aria-label="Send">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                </button>
               </form>
             </section>
-            <div id="autopilot" class="autopilot-workspace" hidden>
-              <div class="auto-card">
-                <div class="auto-head">
-                  <span class="bolt" aria-hidden="true">⚡</span>
-                  <strong>PortalOS Autopilot</strong>
-                  <span class="live">LIVE</span>
-                </div>
-                <p class="auto-copy">Watching the demo inbox. Replies are drafted, not sent. Important mail is saved to Notes.</p>
-                <div id="autoFeed" class="auto-feed"></div>
-              </div>
-            </div>
           </div>
 
           <div id="appSheet" class="sheet" hidden>
@@ -62,13 +84,15 @@
             <div class="sheet-body" id="sheetBody"></div>
           </div>
         </div>
+
         <div class="home-bar"></div>
       </div>
     </div>
-    <p class="demo-hint">Open <b>Agent</b> to plan a week, <b>Mail</b> to triage, or turn the red power toggle for Autopilot. Drag any app into Insight for live Nemotron context.</p>
+
+    <p class="demo-hint">Layout matches the Simulator: dock, date, drawer apps, Insight sheet. Open <b>Agent</b>, drop <b>Mail</b>/<b>Calendar</b>, or flip Autopilot.</p>
   </main>
 
   <p class="foot">PortalOS hackathon demo · Token Factory inference stays server-side · <a href="https://github.com/stalkiq/portalsos">Source</a></p>
-  <script src="/app.js?v=9"></script>
+  <script src="/app.js?v=10"></script>
 </body>
 </html>
