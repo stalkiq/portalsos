@@ -6,9 +6,10 @@ const dockApps = [
 ];
 
 const drawerApps = [
-  { id: "Agent", hint: "Agent Channel plans week/month/year from Mail, Calendar, Notes, Weather." },
+  { id: "Agent", hint: "Agent Channel plans week/month/year from Mail, Calendar, Notes, Weather, Maps." },
   { id: "Calendar", hint: "Demo calendar: Pro meeting, check-in, Charlotte→Fort Myers flights." },
-  { id: "Weather", hint: "Demo forecast: mild week, rain midweek." }
+  { id: "Weather", hint: "Demo forecast: mild week, rain midweek." },
+  { id: "Maps", hint: "Demo trip: Midtown to JFK · Drive 45 min · 17.2 mi." }
 ];
 
 const allApps = [...dockApps, ...drawerApps];
@@ -20,7 +21,22 @@ const icons = {
   Mail: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="6" width="17" height="12.5" rx="2"/><path d="M4 7.5l8 6 8-6"/></svg>',
   Agent: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l1.2 4.2L17.5 8.5l-4.3 1.3L12 14l-1.2-4.2L6.5 8.5l4.3-1.3L12 3z"/><path d="M18.5 14l.7 2.3 2.3.7-2.3.7-.7 2.3-.7-2.3-2.3-.7 2.3-.7.7-2.3z"/></svg>',
   Calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3.5" y="5.5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3.5v4M16 3.5v4M8 14h3M13 14h3M8 17.5h3"/></svg>',
-  Weather: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="10" r="3.2"/><path d="M9 4.5v1.2M9 14.3v1.2M4.5 10H3.3M14.7 10h-1.2M5.7 6.7l-.9-.9M13.2 14.2l-.9-.9M13.2 5.8l-.9.9M5.7 13.3l-.9.9"/><path d="M12.5 16.5h5.2a3.3 3.3 0 1 0-.4-6.55A4.4 4.4 0 0 0 9.2 8.2"/></svg>'
+  Weather: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9" cy="10" r="3.2"/><path d="M9 4.5v1.2M9 14.3v1.2M4.5 10H3.3M14.7 10h-1.2M5.7 6.7l-.9-.9M13.2 14.2l-.9-.9M13.2 5.8l-.9.9M5.7 13.3l-.9.9"/><path d="M12.5 16.5h5.2a3.3 3.3 0 1 0-.4-6.55A4.4 4.4 0 0 0 9.2 8.2"/></svg>',
+  Maps: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 4.5l6-1.5 5 1.5v15l-5-1.5-6 1.5-5-1.5v-15l5 1.5z"/><path d="M9 4.5v15M15 3v15"/></svg>'
+};
+
+const demoMaps = {
+  name: "John F. Kennedy International Airport",
+  address: "Queens, NY 11430",
+  origin: "Midtown Manhattan",
+  mode: "Drive",
+  eta: "45 min",
+  distance: "17.2 mi",
+  steps: [
+    "Head southeast on 5th Ave",
+    "Take I-495 E / Long Island Expwy",
+    "Follow signs for JFK Airport"
+  ]
 };
 
 const demoMail = [
@@ -156,12 +172,13 @@ function contextMeta(id) {
   if (id === "Mail") return `${state.mailItems.length} messages · ${state.mailItems.filter((m) => m.unread).length} unread`;
   if (id === "Calendar") return demoCalendar.subtitle;
   if (id === "Weather") return "New York · demo forecast";
+  if (id === "Maps") return `${demoMaps.name} · ${demoMaps.eta}`;
   if (id === "Notes") {
     const note = state.notes[state.selectedNote];
     return note ? (note.title || "Untitled note") : "No note selected";
   }
   if (id === "Browser") return "PortalOS search";
-  if (id === "Agent") return "Mail · Calendar · Notes · Weather";
+  if (id === "Agent") return "Mail · Calendar · Notes · Weather · Maps";
   if (id === "Camera") return state.photo ? "Photo captured" : "No photo yet";
   return "";
 }
@@ -174,6 +191,7 @@ function placeholderFor(id) {
     case "Browser": return "Ask about this page…";
     case "Calendar": return "Add an event, or ask about this week…";
     case "Weather": return "Ask about this forecast…";
+    case "Maps": return "Ask about this trip or place…";
     case "Agent": return "Plan my week, month, or year…";
     default: return "Ask PortalOS…";
   }
@@ -209,14 +227,14 @@ function renderTryRow() {
   row.innerHTML = [
     ["Plan week", "agent"],
     ["Triage Mail", "mail"],
-    ["Brief Calendar", "calendar"]
+    ["Brief Maps", "maps"]
   ].map(([label, id]) => `<button type="button" class="try-chip" data-try="${id}">${label}</button>`).join("");
   row.querySelectorAll("[data-try]").forEach((btn) => {
     btn.onclick = () => {
       const kind = btn.dataset.try;
       if (kind === "agent") return pinApp("Agent");
       if (kind === "mail") return pinApp("Mail");
-      if (kind === "calendar") return pinApp("Calendar");
+      if (kind === "maps") return pinApp("Maps");
     };
   });
 }
@@ -276,7 +294,8 @@ function contextHint() {
       "MAIL:\n" + demoMail.map((m) => `${m.unread ? "UNREAD" : "read"} ${m.from} | ${m.subject} | ${m.snippet}`).join("\n"),
       note ? `NOTES:\n${note.title}\n${note.body}` : "NOTES: none",
       `CALENDAR:\n${demoCalendar.hero}\n${demoCalendar.detail}`,
-      "WEATHER: mild week, rain chance midweek."
+      "WEATHER: mild week, rain chance midweek.",
+      `MAPS:\nDestination: ${demoMaps.name}\nFrom ${demoMaps.origin}\n${demoMaps.mode} ${demoMaps.eta} · ${demoMaps.distance}`
     ].join("\n\n");
   }
   if (state.context === "Mail") {
@@ -287,6 +306,18 @@ function contextHint() {
   }
   if (state.context === "Weather") {
     return "Open-Meteo demo: New York, high 74°F, low 61°F, rain chance Wednesday, otherwise mild.";
+  }
+  if (state.context === "Maps") {
+    return [
+      "Google Maps demo place + route.",
+      `Destination: ${demoMaps.name}`,
+      `Address: ${demoMaps.address}`,
+      `Origin: ${demoMaps.origin}`,
+      `Mode: ${demoMaps.mode}`,
+      `ETA: ${demoMaps.eta} · ${demoMaps.distance}`,
+      "Steps:",
+      ...demoMaps.steps.map((step) => `- ${step}`)
+    ].join("\n");
   }
   if (state.context === "Notes") {
     const note = state.notes[state.selectedNote];
@@ -344,7 +375,7 @@ function pinApp(id) {
     return;
   }
   if (id === "Agent") {
-    ask("Plan my week. Prioritize the next 7 days using mail, notes, calendar, and weather. Short actionable bullets only.");
+    ask("Plan my week. Prioritize the next 7 days using mail, notes, calendar, weather, and maps. Short actionable bullets only.");
     return;
   }
   if (id === "Calendar") {
@@ -355,6 +386,10 @@ function pinApp(id) {
   }
   if (id === "Weather") {
     ask("Brief this forecast. What to wear, umbrella or not, and the day that changes plans. Short bullets only.");
+    return;
+  }
+  if (id === "Maps") {
+    ask("Brief this Google Maps place and route. Leave-by time, how to go, and what to watch for. Short bullets only.");
     return;
   }
   const app = appById(id);
@@ -717,7 +752,7 @@ function openApp(id) {
       <div class="mail-reader"><div class="mail-reader-body">
         <p class="mail-kicker">TOKEN FACTORY AGENT</p>
         <h3>Agent Channel</h3>
-        <p>Plans week / month / year from Mail, Calendar, Notes, and Weather using NVIDIA Nemotron on Nebius Token Factory.</p>
+        <p>Plans week / month / year from Mail, Calendar, Notes, Weather, and Maps using NVIDIA Nemotron on Nebius Token Factory.</p>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
           <button type="button" class="mail-action" data-h="week">Plan week</button>
           <button type="button" class="mail-action" data-h="month">Plan month</button>
@@ -732,7 +767,7 @@ function openApp(id) {
         state.context = "Agent";
         state.messages = [];
         renderChat();
-        ask(`Plan my ${btn.dataset.h}. Use mail, notes, calendar, weather. Short actionable bullets. Final answer only.`);
+        ask(`Plan my ${btn.dataset.h}. Use mail, notes, calendar, weather, maps. Short actionable bullets. Final answer only.`);
       };
     });
     $("agentPortal").onclick = () => {
@@ -770,6 +805,24 @@ function openApp(id) {
     $("wxPortal").onclick = () => {
       $("appSheet").hidden = true;
       pinApp("Weather");
+    };
+    return;
+  }
+  if (id === "Maps") {
+    setSheetChrome("Maps", "Maps", "");
+    $("sheetBody").innerHTML = `
+      <div class="mail-reader-body" style="padding:18px 20px">
+        <p class="mail-kicker">GOOGLE MAPS DEMO</p>
+        <h3 style="color:#fff;margin:0 0 10px">${escapeHtml(demoMaps.name)}</h3>
+        <p>${escapeHtml(demoMaps.address)}</p>
+        <p style="margin-top:10px">From ${escapeHtml(demoMaps.origin)} · ${escapeHtml(demoMaps.mode)} ${escapeHtml(demoMaps.eta)} · ${escapeHtml(demoMaps.distance)}</p>
+        <p style="margin-top:10px">${demoMaps.steps.map((step) => `• ${escapeHtml(step)}`).join("<br>")}</p>
+        <button type="button" class="mail-portal" id="mapsPortal" style="margin-top:18px">Add to Portal</button>
+        ${nebiusMark()}
+      </div>`;
+    $("mapsPortal").onclick = () => {
+      $("appSheet").hidden = true;
+      pinApp("Maps");
     };
     return;
   }

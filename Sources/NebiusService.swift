@@ -222,6 +222,13 @@ struct NebiusService {
             Give a phone-sized brief: what it feels like now, what to wear, umbrella or not, and the one day that changes plans.
             3-6 short sentences. No thinking process. No recap of the prompt.
             """
+        } else if appName == "Maps" {
+            system = """
+            You are PortalOS Maps Insight on Nebius Token Factory (NVIDIA Nemotron).
+            Use only the Google Places / Routes context you were given. Never invent places, ETAs, or addresses.
+            Give a phone-sized trip brief: where they are going, leave-by time if ETA is known, Drive vs Walk tradeoffs, and one watch-out (traffic, walking safety, tight connection).
+            If weather context is present, factor it in briefly. 3-6 short sentences. No thinking process. No place ids.
+            """
         } else {
             system = """
             You are PortalOS Insight, a phone assistant.
@@ -233,7 +240,7 @@ struct NebiusService {
         return try await completeChat(
             system: system,
             user: user + "\n/no_think",
-            maxTokens: (appName == "Mail" || appName == "Calendar") ? 420 : (appName == "Weather" ? 220 : 160),
+            maxTokens: (appName == "Mail" || appName == "Calendar") ? 420 : ((appName == "Weather" || appName == "Maps") ? 220 : 160),
             onPartial: onPartial
         )
     }
@@ -330,7 +337,7 @@ struct NebiusService {
     func generateAgentPlan(horizon: AgentPlanHorizon, contextHint: String?, userPrompt: String?) async throws -> String {
         let system = """
         You are the PortalOS Agent living in Agent Channel on Nebius Token Factory (NVIDIA Nemotron).
-        You help the user run their life using live phone context: Mail, Calendar, Notes, Weather.
+        You help the user run their life using live phone context: Mail, Calendar, Notes, Weather, and Maps.
         Horizon: \(horizon.title).
 
         Write a practical plan a busy person can use:
@@ -354,7 +361,7 @@ struct NebiusService {
     func agentChannelReply(contextHint: String?, history: String?, userPrompt: String) async throws -> String {
         let system = """
         You are the PortalOS Agent in Agent Channel on Nebius Token Factory (NVIDIA Nemotron).
-        Answer using Mail, Calendar, Notes, and Weather context. Be concrete and actionable.
+        Answer using Mail, Calendar, Notes, Weather, and Maps context. Be concrete and actionable.
         If the user asks about week/month/year, shape the answer to that horizon.
         Never invent inbox or calendar items. No thinking process. No message ids. Keep replies under ~12 short sentences or tight bullets.
         """

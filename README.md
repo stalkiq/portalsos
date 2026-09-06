@@ -2,7 +2,7 @@
 
 **Nebius × NVIDIA Global AI Hackathon submission**
 
-PortalOS is an AI-first phone OS prototype. The home screen is the agent surface: drop live app context into **Insight**, run **Autopilot** over mail, and open **Agent Channel** — the Token Factory–powered agent that plans your week, month, or year from Mail, Calendar, Notes, and Weather.
+PortalOS is an AI-first phone OS prototype. The home screen is the agent surface: drop live app context into **Insight**, run **Autopilot** over mail, and open **Agent Channel** — the Token Factory–powered agent that plans your week, month, or year from Mail, Calendar, Notes, Weather, and Maps.
 
 Built on **Nebius Token Factory** with **NVIDIA Nemotron** open models.
 
@@ -39,10 +39,10 @@ Built on **Nebius Token Factory** with **NVIDIA Nemotron** open models.
 
 PortalOS treats the phone as an **agent runtime**, not a chat box bolted onto apps.
 
-1. **Insight** — drag Browser, Camera, Notes, Mail, Calendar, Weather, or Agent onto the home-screen chat. Nemotron reads that live context and answers.
-2. **Agent Channel** — the dedicated home for the Token Factory agent. It aggregates Mail + Calendar + Notes + Weather and generates actionable **Week / Month / Year** plans.
+1. **Insight** — drag Browser, Camera, Notes, Mail, Calendar, Weather, Maps, or Agent onto the home-screen chat. Nemotron reads that live context and answers.
+2. **Agent Channel** — the dedicated home for the Token Factory agent. It aggregates Mail + Calendar + Notes + Weather + Maps and generates actionable **Week / Month / Year** plans.
 3. **Mail Autopilot** — watches Gmail (when signed in), drafts replies with Nemotron, and can save important mail to Notes. Drafts are never auto-sent.
-4. **App suite** — Browser, Camera (vision), Notes, Mail (Gmail OAuth), Calendar (Google Calendar), Weather (Open-Meteo + Nemotron briefing).
+4. **App suite** — Browser, Camera (vision), Notes, Mail (Gmail OAuth), Calendar (Google Calendar), Weather (Open-Meteo + Nemotron), Maps (Google Places/Routes + MapKit + Nemotron briefing).
 
 ### Why this track
 
@@ -55,7 +55,7 @@ PortalOS treats the phone as an **agent runtime**, not a chat box bolted onto ap
 | Surface | Model role | Token Factory path |
 |---|---|---|
 | Agent Channel week/month/year plans | Fast reasoning over multi-app context | `POST /v1/chat/completions` |
-| Insight (Mail triage, Calendar brief, Weather) | Everyday Nemotron calls for responsive UX | same |
+| Insight (Mail triage, Calendar brief, Weather, Maps) | Everyday Nemotron calls for responsive UX | same |
 | Camera Insight | Vision Nemotron / Omni (+ VL fallback) | same |
 | Mail “Write with Token Factory” | Draft generation | same |
 | Autopilot | Background-style draft / note suggestions | same |
@@ -128,9 +128,12 @@ Browser → CloudFront → S3 (static) / Lambda → Token Factory
 
 ```xcconfig
 NEBIUS_API_KEY = your_key_here
+GOOGLE_MAPS_API_KEY = your_maps_key_here
 ```
 
 `Secrets.xcconfig` and `Sources/Generated/` are gitignored — never commit keys.
+
+For Maps, enable **Places API (New)** and **Routes API** in Google Cloud, then set `GOOGLE_MAPS_API_KEY`.
 
 Optional overrides:
 

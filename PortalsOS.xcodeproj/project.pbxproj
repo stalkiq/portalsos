@@ -22,6 +22,8 @@
 		C4E8A91B2F8D4A1E9C3B5DA5 /* WeatherEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E8A91B2F8D4A1E9C3B5DA4 /* WeatherEngine.swift */; };
 		C4E8A91B2F8D4A1E9C3B5DA7 /* WeatherAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4E8A91B2F8D4A1E9C3B5DA6 /* WeatherAppView.swift */; };
 		D8F1A2B3C4D5E6F708192A3B /* AgentChannelAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F1A2B3C4D5E6F708192A3A /* AgentChannelAppView.swift */; };
+		E9A1B2C3D4E5F60718293A4B /* MapsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A1B2C3D4E5F60718293A4A /* MapsEngine.swift */; };
+		E9A1B2C3D4E5F60718293A4D /* MapsAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A1B2C3D4E5F60718293A4C /* MapsAppView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +44,8 @@
 		C4E8A91B2F8D4A1E9C3B5DA4 /* WeatherEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherEngine.swift; sourceTree = "<group>"; };
 		C4E8A91B2F8D4A1E9C3B5DA6 /* WeatherAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAppView.swift; sourceTree = "<group>"; };
 		D8F1A2B3C4D5E6F708192A3A /* AgentChannelAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentChannelAppView.swift; sourceTree = "<group>"; };
+		E9A1B2C3D4E5F60718293A4A /* MapsEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsEngine.swift; sourceTree = "<group>"; };
+		E9A1B2C3D4E5F60718293A4C /* MapsAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsAppView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -66,6 +70,8 @@
 				84082F787849F76DB3104FF0 /* HomeScreenPrototypeView.swift */,
 				C4E8A91B2F8D4A1E9C3B5D90 /* KeyboardSupport.swift */,
 				B21C4E7B2F8D4A1E9C3B5D82 /* MailAppView.swift */,
+				E9A1B2C3D4E5F60718293A4C /* MapsAppView.swift */,
+				E9A1B2C3D4E5F60718293A4A /* MapsEngine.swift */,
 				A11C4E7B2F8D4A1E9C3B5D72 /* NotesAppView.swift */,
 				8DE609531C24CF84FB304ACF /* NebiusService.swift */,
 				C9D07168B49947045A6736CD /* PortalsOSApp.swift */,
@@ -164,6 +170,8 @@
 				9E12C1BC0EBE65FA420FA3BD /* HomeScreenPrototypeView.swift in Sources */,
 				C4E8A91B2F8D4A1E9C3B5D91 /* KeyboardSupport.swift in Sources */,
 				B21C4E7B2F8D4A1E9C3B5D83 /* MailAppView.swift in Sources */,
+				E9A1B2C3D4E5F60718293A4D /* MapsAppView.swift in Sources */,
+				E9A1B2C3D4E5F60718293A4B /* MapsEngine.swift in Sources */,
 				A11C4E7B2F8D4A1E9C3B5D73 /* NotesAppView.swift in Sources */,
 				F2A3B4C5D6E7F8091A2B3C42 /* NebiusLocalSecrets.swift in Sources */,
 				D5C20D98E51F86D4C87F978D /* NebiusService.swift in Sources */,
@@ -356,8 +364,9 @@
 				INFOPLIST_KEY_CFBundleDisplayName = PortalOS;
 				INFOPLIST_KEY_NSCameraUsageDescription = "PortalOS Camera uses the camera so Insight can describe what you capture.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "PortalOS can use a library photo when the Simulator has no camera.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "PortalOS Weather uses your location so Open-Meteo can load the local forecast. You can type a city instead.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "PortalOS uses your location for Weather forecasts and Maps routes. You can type a city or place instead.";
 				INFOPLIST_KEY_NEBIUS_API_KEY = "$(NEBIUS_API_KEY)";
+				INFOPLIST_KEY_GOOGLE_MAPS_API_KEY = "$(GOOGLE_MAPS_API_KEY)";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -385,8 +394,9 @@
 				INFOPLIST_KEY_CFBundleDisplayName = PortalOS;
 				INFOPLIST_KEY_NSCameraUsageDescription = "PortalOS Camera uses the camera so Insight can describe what you capture.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "PortalOS can use a library photo when the Simulator has no camera.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "PortalOS Weather uses your location so Open-Meteo can load the local forecast. You can type a city instead.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "PortalOS uses your location for Weather forecasts and Maps routes. You can type a city or place instead.";
 				INFOPLIST_KEY_NEBIUS_API_KEY = "$(NEBIUS_API_KEY)";
+				INFOPLIST_KEY_GOOGLE_MAPS_API_KEY = "$(GOOGLE_MAPS_API_KEY)";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

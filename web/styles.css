@@ -214,6 +214,7 @@ body {
   max-height: 76px;
   opacity: 1;
   margin-bottom: 2px;
+  overflow-x: auto;
 }
 
 .insight-sheet {
