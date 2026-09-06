@@ -20,55 +20,65 @@ body {
   color: var(--text);
 }
 
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 14px 22px;
-  backdrop-filter: blur(14px);
-  background: rgba(7, 8, 18, 0.72);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-.topbar-brand { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.topbar-brand strong { font-size: 15px; }
-.topbar-brand span { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.topbar-links { display: flex; gap: 14px; }
-.topbar-links a { color: rgba(255,255,255,0.78); text-decoration: none; font-size: 13px; font-weight: 600; }
+.topbar { display: none; }
 
 .demo-stage {
-  min-height: calc(100vh - 120px);
+  min-height: calc(100vh - 72px);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  padding: 24px 16px;
+  gap: 36px;
+  padding: 40px 24px 28px;
 }
-.demo-kicker {
+
+.info-card {
+  width: min(320px, 100%);
+  padding: 28px 26px;
+  border-radius: 28px;
+  background: linear-gradient(165deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
+  border: 1px solid rgba(255,255,255,0.14);
+  box-shadow: 0 18px 36px rgba(0,0,0,0.28);
+}
+.info-brand {
   margin: 0;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-size: 28px;
   font-weight: 700;
-  color: var(--accent);
+  letter-spacing: -0.02em;
+  color: #fff;
 }
-.demo-hint {
-  max-width: 420px;
-  margin: 0;
-  text-align: center;
-  color: var(--muted);
+.info-sub {
+  margin: 8px 0 0;
   font-size: 13px;
-  line-height: 1.45;
+  line-height: 1.4;
+  color: var(--muted);
 }
-.demo-hint b { color: rgba(255,255,255,0.88); }
+.info-copy {
+  margin: 18px 0 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: rgba(255,255,255,0.78);
+}
+.info-links {
+  display: flex;
+  gap: 16px;
+  margin-top: 22px;
+}
+.info-links a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 650;
+}
+.info-links a:hover { color: #fff; }
+
+.demo-kicker,
+.demo-hint { display: none; }
 
 .device {
   width: min(402px, 100%);
   filter: drop-shadow(0 28px 50px rgba(0, 0, 0, 0.55));
+  flex-shrink: 0;
 }
 .device-bezel {
   background: linear-gradient(180deg, #1f222d, #171922);
