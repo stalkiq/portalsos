@@ -11,7 +11,8 @@ struct HomeScreenPrototypeView: View {
     private let moreApps: [AppShortcut] = [
         .init(name: "Agent", symbol: "sparkles"),
         .init(name: "Calendar", symbol: "calendar"),
-        .init(name: "Weather", symbol: "cloud.sun.fill")
+        .init(name: "Weather", symbol: "cloud.sun.fill"),
+        .init(name: "Maps", symbol: "map.fill")
     ]
     @State private var droppedApp: AppShortcut?
     @State private var isChatDropTargeted = false
@@ -39,7 +40,9 @@ struct HomeScreenPrototypeView: View {
     @StateObject private var mailEngine: GmailEngine
     @StateObject private var calendarEngine: GoogleCalendarEngine
     @StateObject private var weatherEngine = WeatherEngine()
+    @StateObject private var mapsEngine = MapsEngine()
     @State private var didAddWeatherInsightToNotes = false
+    @State private var didAddMapsInsightToNotes = false
     @State private var didAddCalendarInsightToNotes = false
     @State private var calendarBrief: CalendarBrief?
     @State private var didAddCalendarBuffer = false
@@ -225,12 +228,29 @@ struct HomeScreenPrototypeView: View {
                         )
                     }
                 }
+            case "Maps":
+                MapsAppView(engine: mapsEngine) {
+                    guard let maps = appNamed("Maps") else { return }
+                    droppedApp = maps
+                    insightTurns = []
+                    addActivity(for: maps)
+                    generatedInsight = nil
+                    insightErrorMessage = nil
+                    didAddMapsInsightToNotes = false
+                    Task {
+                        await requestNebiusInsight(
+                            app: maps,
+                            userPrompt: "Brief this Google Maps place and route. Leave-by time, how to go, and what to watch for."
+                        )
+                    }
+                }
             case "Agent":
                 AgentChannelAppView(
                     mail: mailEngine,
                     calendar: calendarEngine,
                     notes: notesStore,
-                    weather: weatherEngine
+                    weather: weatherEngine,
+                    maps: mapsEngine
                 ) {
                     guard let agent = appNamed("Agent") else { return }
                     droppedApp = agent
@@ -504,6 +524,8 @@ struct HomeScreenPrototypeView: View {
             return calendarEngine.insightContext ?? app?.chatInsight
         case "Weather":
             return weatherEngine.insightContext ?? app?.chatInsight
+        case "Maps":
+            return mapsEngine.insightContext ?? app?.chatInsight
         case "Agent":
             return agentContextBundle()
         default:
@@ -535,6 +557,11 @@ struct HomeScreenPrototypeView: View {
         } else {
             parts.append("WEATHER: no forecast loaded.")
         }
+        if let mapsContext = mapsEngine.insightContext {
+            parts.append("MAPS:\n\(mapsContext)")
+        } else {
+            parts.append("MAPS: no place or route loaded.")
+        }
         return parts.joined(separator: "\n\n")
     }
 
@@ -553,6 +580,8 @@ struct HomeScreenPrototypeView: View {
             return "Brief this Google Calendar. Lead with what is next, then today, then real conflicts and free time."
         case "Weather":
             return "Brief this Open-Meteo forecast. What to wear, umbrella or not, and the day that changes plans."
+        case "Maps":
+            return "Brief this Google Maps place and route. Leave-by time, how to go, and what to watch for."
         case "Agent":
             return AgentPlanHorizon.week.prompt
         default:
@@ -613,6 +642,16 @@ struct HomeScreenPrototypeView: View {
             appendAssistantTurn(text)
             isGeneratingInsight = false
             return
+        }
+        if app?.id == "Maps", mapsEngine.selectedPlace == nil, mapsEngine.insightContext == nil {
+            let text = "Open Maps, search a place, pick a pin, then drop it here. Google Places/Routes provide the data; Token Factory briefs the trip."
+            generatedInsight = text
+            appendAssistantTurn(text)
+            isGeneratingInsight = false
+            return
+        }
+        if app?.id == "Maps" {
+            didAddMapsInsightToNotes = false
         }
         if app?.id == "Agent" {
             await mailEngine.restoreInboxIfNeeded()
@@ -735,7 +774,7 @@ struct HomeScreenPrototypeView: View {
         switch app.id {
         case "Camera":
             return cameraEngine.lastImage != nil
-        case "Weather":
+        case "Weather", "Maps":
             return generatedInsight != nil
         default:
             return false
@@ -748,6 +787,8 @@ struct HomeScreenPrototypeView: View {
             return didAddCameraInsightToNotes
         case "Weather":
             return didAddWeatherInsightToNotes
+        case "Maps":
+            return didAddMapsInsightToNotes
         case "Calendar":
             return didAddCalendarInsightToNotes
         default:
@@ -765,6 +806,10 @@ struct HomeScreenPrototypeView: View {
             guard !didAddWeatherInsightToNotes else { return }
             notesStore.addNote(title: weatherEngine.snapshot?.placeName ?? "Weather", body: insight)
             didAddWeatherInsightToNotes = true
+        } else if app.id == "Maps" {
+            guard !didAddMapsInsightToNotes else { return }
+            notesStore.addNote(title: mapsEngine.selectedPlace?.name ?? "Maps brief", body: insight)
+            didAddMapsInsightToNotes = true
         } else if app.id == "Calendar" {
             guard !didAddCalendarInsightToNotes else { return }
             notesStore.addNote(title: calendarBrief?.hero ?? "Calendar brief", body: insight)
@@ -791,6 +836,8 @@ struct HomeScreenPrototypeView: View {
             return "Token Factory is reading Google Calendar..."
         case "Weather":
             return "Nemotron is reading the Open-Meteo forecast..."
+        case "Maps":
+            return "Token Factory is briefing your Google Maps route..."
         case "Agent":
             return "Token Factory agent is planning from your apps..."
         default:
@@ -1538,6 +1585,8 @@ struct HomeScreenPrototypeView: View {
             return "Add an event, or ask about this week…"
         case "Weather":
             return "Ask about this forecast…"
+        case "Maps":
+            return "Ask about this place or route…"
         case "Agent":
             return "Plan my week, month, or year…"
         default:
@@ -1559,12 +1608,16 @@ struct HomeScreenPrototypeView: View {
         if app.id == "Weather", let place = weatherEngine.snapshot?.placeName {
             return "Weather · \(place)"
         }
+        if app.id == "Maps", let place = mapsEngine.selectedPlace {
+            return "Maps · \(place.name)"
+        }
         if app.id == "Agent" {
             var bits: [String] = ["Agent"]
             if mailEngine.isSignedIn { bits.append("Mail") }
             if calendarEngine.isSignedIn { bits.append("Cal") }
             if !notesStore.notes.isEmpty { bits.append("Notes") }
             if weatherEngine.snapshot != nil { bits.append("Weather") }
+            if mapsEngine.selectedPlace != nil { bits.append("Maps") }
             return bits.joined(separator: " · ")
         }
         return "Analyzing \(app.name)"
@@ -1800,8 +1853,10 @@ private struct AppShortcut: Identifiable {
             return "Not signed in. Open Calendar, sign in with Google, then drop it here. Token Factory will brief the next two weeks."
         case "Weather":
             return "No forecast yet. Open Weather, search a city, then drop it here. Open-Meteo loads the numbers; Token Factory tells you what to do."
+        case "Maps":
+            return "No place yet. Open Maps, search with Google Places, pick a pin, then drop it here for a Token Factory trip brief."
         case "Agent":
-            return "Your Token Factory agent. Open Agent Channel, or drop it here to plan the week from Mail, Calendar, Notes, and Weather."
+            return "Your Token Factory agent. Open Agent Channel, or drop it here to plan the week from Mail, Calendar, Notes, Weather, and Maps."
         default:
             return "No live page yet. Open Browser, visit a site, then drop it here — PortalOS will summarize that page."
         }
@@ -1819,8 +1874,10 @@ private struct AppShortcut: Identifiable {
             return "Briefed Google Calendar: next event, what matters today, conflicts, and free time."
         case "Weather":
             return "Read the Open-Meteo forecast and suggested what to wear."
+        case "Maps":
+            return "Briefed a Google Maps place and route with leave-by guidance from Token Factory."
         case "Agent":
-            return "Planned from Mail, Calendar, Notes, and Weather using Nebius Token Factory."
+            return "Planned from Mail, Calendar, Notes, Weather, and Maps using Nebius Token Factory."
         default:
             return "Summarized the open page into a short action list."
         }

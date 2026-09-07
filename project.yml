@@ -28,8 +28,9 @@ targets:
         INFOPLIST_FILE: Resources/Info.plist
         INFOPLIST_KEY_NSCameraUsageDescription: PortalOS Camera uses the camera so Insight can describe what you capture.
         INFOPLIST_KEY_NSPhotoLibraryUsageDescription: PortalOS can use a library photo when the Simulator has no camera.
-        INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: PortalOS Weather uses your location so Open-Meteo can load the local forecast. You can type a city instead.
+        INFOPLIST_KEY_NSLocationWhenInUseUsageDescription: PortalOS Weather and Maps use your location for local forecasts and routes. You can type a city or place instead.
         INFOPLIST_KEY_NEBIUS_API_KEY: $(NEBIUS_API_KEY)
+        INFOPLIST_KEY_GOOGLE_MAPS_API_KEY: $(GOOGLE_MAPS_API_KEY)
     configFiles:
       Debug: Config/PortalsOS.xcconfig
       Release: Config/PortalsOS.xcconfig

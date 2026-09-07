@@ -12,9 +12,11 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>PortalOS can use a library photo when the Simulator has no camera.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>PortalOS Weather uses your location so Open-Meteo can load the local forecast. You can type a city instead.</string>
+	<string>PortalOS Weather and Maps use your location for local forecasts and routes. You can type a city or place instead.</string>
 	<key>NEBIUS_API_KEY</key>
 	<string>$(NEBIUS_API_KEY)</string>
+	<key>GOOGLE_MAPS_API_KEY</key>
+	<string>$(GOOGLE_MAPS_API_KEY)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

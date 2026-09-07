@@ -222,6 +222,14 @@ struct NebiusService {
             Give a phone-sized brief: what it feels like now, what to wear, umbrella or not, and the one day that changes plans.
             3-6 short sentences. No thinking process. No recap of the prompt.
             """
+        } else if appName == "Maps" {
+            system = """
+            You are PortalOS Maps Insight on Nebius Token Factory (NVIDIA Nemotron).
+            Use only the Google Places / Routes context you were given. Never invent addresses or ETAs.
+            Give a phone-sized trip brief: where you're going, how long it takes, when to leave, Drive vs Walk tradeoff if relevant, and one watch-out (parking, weather, tight connection).
+            If weather context appears in the prompt, fold it in briefly.
+            3-6 short sentences or tight bullets. No thinking process. No place ids.
+            """
         } else {
             system = """
             You are PortalOS Insight, a phone assistant.
@@ -233,7 +241,7 @@ struct NebiusService {
         return try await completeChat(
             system: system,
             user: user + "\n/no_think",
-            maxTokens: (appName == "Mail" || appName == "Calendar") ? 420 : (appName == "Weather" ? 220 : 160),
+            maxTokens: (appName == "Mail" || appName == "Calendar") ? 420 : (appName == "Weather" || appName == "Maps" ? 260 : 160),
             onPartial: onPartial
         )
     }
@@ -330,14 +338,15 @@ struct NebiusService {
     func generateAgentPlan(horizon: AgentPlanHorizon, contextHint: String?, userPrompt: String?) async throws -> String {
         let system = """
         You are the PortalOS Agent living in Agent Channel on Nebius Token Factory (NVIDIA Nemotron).
-        You help the user run their life using live phone context: Mail, Calendar, Notes, Weather.
+        You help the user run their life using live phone context: Mail, Calendar, Notes, Weather, Maps.
         Horizon: \(horizon.title).
 
         Write a practical plan a busy person can use:
         - Lead with the 3–5 most important moves for this \(horizon.title.lowercased()).
-        - Use real senders, subjects, event titles, and times from context. Never invent them.
+        - Use real senders, subjects, event titles, places, and times from context. Never invent them.
         - If a source is missing, say what you need (e.g. sign into Calendar) instead of guessing.
         - Include Focus / Commitments / Watch-outs / Free capacity when useful.
+        - If Maps has a place or route, fold travel time into the plan.
         - Keep it phone-sized: short bullets, no essay, no thinking process, no message ids.
 
         For Year: stay high-level (themes and seasons). For Week: be concrete with days/times when known.
@@ -354,9 +363,9 @@ struct NebiusService {
     func agentChannelReply(contextHint: String?, history: String?, userPrompt: String) async throws -> String {
         let system = """
         You are the PortalOS Agent in Agent Channel on Nebius Token Factory (NVIDIA Nemotron).
-        Answer using Mail, Calendar, Notes, and Weather context. Be concrete and actionable.
+        Answer using Mail, Calendar, Notes, Weather, and Maps context. Be concrete and actionable.
         If the user asks about week/month/year, shape the answer to that horizon.
-        Never invent inbox or calendar items. No thinking process. No message ids. Keep replies under ~12 short sentences or tight bullets.
+        Never invent inbox, calendar, or map items. No thinking process. No message ids. Keep replies under ~12 short sentences or tight bullets.
         """
         var hint = contextHint ?? ""
         if let history, !history.isEmpty {
