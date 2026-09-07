@@ -1,13 +1,13 @@
 :root {
-  --text: #f4f6ff;
-  --muted: rgba(255, 255, 255, 0.55);
-  --accent: #6aa8ff;
-  --action: #4577fa;
-  --line: rgba(255, 255, 255, 0.14);
-  --card0: #1e212c;
-  --card1: #171922;
-  --sheet0: rgba(255, 255, 255, 0.11);
-  --sheet1: rgba(255, 255, 255, 0.045);
+  --text: #fff4f4;
+  --muted: rgba(255, 230, 230, 0.55);
+  --accent: #ff6b6b;
+  --action: #c62828;
+  --line: rgba(255, 200, 200, 0.14);
+  --card0: #2a1418;
+  --card1: #1a0c0e;
+  --sheet0: rgba(255, 120, 120, 0.12);
+  --sheet1: rgba(255, 80, 80, 0.04);
 }
 
 * { box-sizing: border-box; }
@@ -15,8 +15,9 @@ html, body { margin: 0; min-height: 100%; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
   background:
-    radial-gradient(900px 480px at 70% -5%, rgba(66, 76, 132, 0.42), transparent 55%),
-    linear-gradient(160deg, #0f111a 0%, #0a0c14 45%, #070812 100%);
+    radial-gradient(900px 480px at 70% -5%, rgba(140, 28, 40, 0.55), transparent 55%),
+    radial-gradient(700px 420px at 10% 90%, rgba(80, 12, 18, 0.35), transparent 50%),
+    linear-gradient(160deg, #1a080a 0%, #120506 45%, #0a0304 100%);
   color: var(--text);
 }
 
@@ -36,9 +37,9 @@ body {
   width: min(320px, 100%);
   padding: 28px 26px;
   border-radius: 28px;
-  background: linear-gradient(165deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
-  border: 1px solid rgba(255,255,255,0.14);
-  box-shadow: 0 18px 36px rgba(0,0,0,0.28);
+  background: linear-gradient(165deg, rgba(180, 40, 50, 0.22), rgba(40, 10, 14, 0.55));
+  border: 1px solid rgba(255, 120, 120, 0.22);
+  box-shadow: 0 18px 36px rgba(0,0,0,0.40);
 }
 .info-brand {
   margin: 0;
@@ -81,11 +82,11 @@ body {
   flex-shrink: 0;
 }
 .device-bezel {
-  background: linear-gradient(180deg, #1f222d, #171922);
+  background: linear-gradient(180deg, #3a181c, #220e12);
   border-radius: 44px;
   padding: 10px 10px 14px;
-  border: 1.5px solid rgba(255, 255, 255, 0.18);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+  border: 1.5px solid rgba(255, 140, 140, 0.22);
+  box-shadow: inset 0 1px 0 rgba(255,180,180,0.08);
 }
 
 .status-row {
@@ -118,9 +119,9 @@ body {
   border-radius: 36px;
   overflow: hidden;
   background:
-    radial-gradient(420px 260px at 85% 0%, rgba(66, 76, 132, 0.35), transparent 60%),
-    linear-gradient(180deg, #1e212c, #151821 55%, #10131b);
-  border: 1px solid rgba(255,255,255,0.08);
+    radial-gradient(420px 260px at 85% 0%, rgba(160, 36, 48, 0.45), transparent 60%),
+    linear-gradient(180deg, #2c1216, #1a0a0d 55%, #120608);
+  border: 1px solid rgba(255,140,140,0.12);
 }
 
 .home {
@@ -323,7 +324,7 @@ body {
 }
 .bubble.user {
   align-self: flex-end;
-  background: #385fce;
+  background: #a81f2e;
   color: rgba(255,255,255,0.98);
 }
 .bubble.assistant {
@@ -370,7 +371,7 @@ body {
   color: rgba(255,255,255,0.88);
 }
 .cal-chip.next { border-color: rgba(140, 158, 250, 0.35); }
-.cal-chip.next span { color: #8c9efa; }
+.cal-chip.next span { color: #ff8a8a; }
 .cal-chip.risk { border-color: rgba(250, 158, 97, 0.35); }
 .cal-chip.risk span { color: #fa9e61; }
 .cal-chip.free { border-color: rgba(115, 209, 184, 0.35); }
@@ -399,8 +400,8 @@ body {
   margin: 0 10px 10px;
   padding: 8px 10px;
   border-radius: 22px;
-  background: #12151f;
-  border: 1px solid rgba(255,255,255,0.10);
+  background: #1a0a0d;
+  border: 1px solid rgba(255,140,140,0.14);
   flex-shrink: 0;
 }
 .composer-icon {
@@ -560,7 +561,7 @@ body {
   text-align: left; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04);
   color: white; border-radius: 12px; padding: 10px; cursor: pointer;
 }
-.note-card.selected { border-color: rgba(106,168,255,0.55); background: rgba(69,119,250,0.18); }
+.note-card.selected { border-color: rgba(255,120,120,0.55); background: rgba(198,40,40,0.22); }
 .note-card strong { display: block; font-size: 12px; margin-bottom: 4px; }
 .note-card span { display: block; font-size: 11px; color: var(--muted); max-height: 2.6em; overflow: hidden; }
 .notes-editor { display: flex; flex-direction: column; min-height: 0; padding: 12px; gap: 8px; }
@@ -628,7 +629,7 @@ body {
 .mail-compose-body textarea { min-height: 180px; resize: vertical; }
 .mail-draft {
   width: 100%; margin-bottom: 12px; border: 0; border-radius: 12px;
-  background: rgba(69,119,250,0.9); color: white; font-weight: 700; padding: 12px; cursor: pointer;
+  background: rgba(198,40,40,0.92); color: white; font-weight: 700; padding: 12px; cursor: pointer;
 }
 .mail-draft:disabled { opacity: 0.5; }
 
